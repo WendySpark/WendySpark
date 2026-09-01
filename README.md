@@ -44,14 +44,20 @@ across four assets, each matched with a countermeasure and implementation plan.
 
 <img src="./hd-about-this-page.svg" width="620" alt="about this page"/>
 
-Every graphic on this page is generated, not embedded from anyone else's server.
-`ascii.svg` is a photo pushed through a brightness-to-character ramp by
-[`scripts/make_portrait.py`](scripts/make_portrait.py), run once by hand - the
-source photo itself isn't committed. The stats graphics and these section
-headings are drawn by [`scripts/generate_stats.py`](scripts/generate_stats.py)
-straight from the GitHub GraphQL API, run daily by
-[a scheduled action](.github/workflows/stats.yml) that commits only what changed.
+Every graphic here is generated, not embedded from anyone else's server.<br>
+`ascii.svg` is a photo pushed through a character ramp by<br>
+[`scripts/make_portrait.py`](scripts/make_portrait.py); the stat graphics and<br>
+these section headings are drawn by [a scheduled action](.github/workflows/stats.yml)<br>
+straight from the GitHub GraphQL API, once a day, committing only what changed.
 
-Since nothing loads from a third party, nothing here can rate-limit or go dark.
-Headings and stats use the viewer's own monospace font stack rather than an
-embedded font, so this page stays a plain, dependency-free SVG pipeline.
+They animate with SMIL inside the SVG, because GitHub strips scripts from<br>
+READMEs — and since nothing loads from a third party, nothing here can<br>
+rate-limit or go dark. The headings are SVGs for the same reason: GitHub also<br>
+strips CSS, so an image is the only way to put this page's own typeface on them.
+
+The typeface is [JetBrains Mono](scripts/fonts), subset to just the characters<br>
+each graphic draws and inlined as base64. That isn't only for looks: the<br>
+portrait's grid assumes an advance width of exactly 0.600 em, and a viewer whose<br>
+default monospace is narrower would otherwise see it squeezed.
+
+Language totals cover public repositories only.

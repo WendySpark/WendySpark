@@ -1,7 +1,7 @@
 name: refresh stats
 
-# Deliberately no `push` trigger: this job commits the generated SVGs, and a
-# push trigger would make it re-run on its own commit.
+# Deliberately no `push` trigger: this job commits stats.svg, and a push
+# trigger would make it re-run on its own commit.
 on:
   schedule:
     - cron: "17 5 * * *"
@@ -29,7 +29,7 @@ jobs:
 
       - name: Commit whatever changed
         run: |
-          FILES="stats.svg streak.svg langs.svg hd-*.svg"
+          FILES="stats.svg streak.svg langs.svg year.svg hd-*.svg"
           if [ -z "$(git status --porcelain -- $FILES)" ]; then
             echo "no change"
             exit 0
