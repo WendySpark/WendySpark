@@ -258,75 +258,6 @@ def render_langs(by_bytes, by_repo_count, colors):
     return svg(WIDTH, height, "".join(parts))
 
 
-def render_year(days):
-    """One character per day for the last ~365 days, GitHub-calendar shaped."""
-    counts = [c for _, c in days]
-    nonzero = sorted(c for c in counts if c > 0)
-    if nonzero:
-        q1 = nonzero[len(nonzero) // 4] if len(nonzero) >= 4 else nonzero[0]
-        q2 = nonzero[len(nonzero) // 2]
-        q3 = nonzero[min(len(nonzero) * 3 // 4, len(nonzero) - 1)]
-    else:
-        q1 = q2 = q3 = 0
-
-    def char_for(c):
-        if c == 0:
-            return "·"  # ·
-        if c <= q1:
-            return ":"
-        if c <= q2:
-            return "+"
-        if c <= q3:
-            return "#"
-        return "@"
-
-    def color_for(c):
-        if c == 0:
-            return BORDER
-        if c <= q1:
-            return "#1f6f60"
-        if c <= q2:
-            return "#238878"
-        if c <= q3:
-            return "#2dd4bf"
-        return "#7dfff0"
-
-    # lay out 7 rows (Sun-Sat) x N weeks, oldest -> newest, left to right
-    first_date = days[0][0]
-    start = first_date - datetime.timedelta(days=(first_date.weekday() + 1) % 7)
-    grid = {}
-    for d, c in days:
-        grid[d] = c
-
-    weeks = []
-    cursor = start
-    today = days[-1][0]
-    while cursor <= today:
-        weeks.append(cursor)
-        cursor += datetime.timedelta(days=7)
-
-    cell = 9
-    left = 24
-    top = 20
-    parts = []
-    for wi, week_start in enumerate(weeks):
-        for di in range(7):
-            d = week_start + datetime.timedelta(days=di)
-            if d < first_date or d > today:
-                continue
-            c = grid.get(d, 0)
-            x = left + wi * cell
-            y = top + di * cell
-            parts.append(
-                f'<text x="{x}" y="{y}" font-family="{FONT}" font-size="9" '
-                f'fill="{color_for(c)}">{char_for(c)}</text>'
-            )
-
-    height = top + 7 * cell + 14
-    width = max(WIDTH, left + len(weeks) * cell + 20)
-    return svg(width, height, "".join(parts))
-
-
 # ============================== Main ==============================
 
 
@@ -358,7 +289,6 @@ def main():
     write("stats.svg", render_stats(cc))
     write("streak.svg", render_streak(streaks))
     write("langs.svg", render_langs(by_bytes, by_repo_count, colors))
-    write("year.svg", render_year(days))
 
     for slug, label in [
         ("about", "about"),

@@ -1,6 +1,6 @@
 <div align="center">
 
-# WendySpark
+<img src="./ascii.svg" width="460" alt="Portrait"/>
 
 <img src="./stats.svg" width="620" alt="Contributions in the last year"/>
 
@@ -40,21 +40,18 @@ across four assets, each matched with a countermeasure and implementation plan.
 
 <img src="./langs.svg" width="620" alt="Top languages by bytes and by repo"/>
 
-<img src="./year.svg" width="620" alt="The last year, one character per day"/>
-
 </div>
 
 <img src="./hd-about-this-page.svg" width="620" alt="about this page"/>
 
 Every graphic on this page is generated, not embedded from anyone else's server.
-[`scripts/generate_stats.py`](scripts/generate_stats.py) pulls straight from the
-GitHub GraphQL API and draws `stats.svg`, `streak.svg`, `langs.svg`, `year.svg`,
-and these section headings, run daily by
+`ascii.svg` is a photo pushed through a brightness-to-character ramp by
+[`scripts/make_portrait.py`](scripts/make_portrait.py), run once by hand - the
+source photo itself isn't committed. The stats graphics and these section
+headings are drawn by [`scripts/generate_stats.py`](scripts/generate_stats.py)
+straight from the GitHub GraphQL API, run daily by
 [a scheduled action](.github/workflows/stats.yml) that commits only what changed.
 
 Since nothing loads from a third party, nothing here can rate-limit or go dark.
 Headings and stats use the viewer's own monospace font stack rather than an
 embedded font, so this page stays a plain, dependency-free SVG pipeline.
-
-`year.svg` lays the last ~365 days out GitHub-calendar-shaped (one character per
-day, oldest to newest, left to right) using a quiet-to-loud ramp: `·` `:` `+` `#` `@`.
